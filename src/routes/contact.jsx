@@ -1,4 +1,4 @@
-import { Form, useLoaderData, Link } from "react-router-dom";
+import { Form, useLoaderData, useFetcher } from "react-router-dom";
 import { getContact } from "../contacts";
 
 export async function loader({ params }) {
@@ -42,15 +42,7 @@ export default function Contact() {
           <Form action="edit">
             <button type="submit">Edit</button>
           </Form>
-          <Form
-            method="post"
-            action="destroy"
-            onSubmit={(event) => {
-              // if (!confirm("Please confirm you want to delete this record.")) {
-              //   event.preventDefault();
-              // }
-            }}
-          >
+          <Form method="post" action="destroy">
             <button type="submit">Delete</button>
           </Form>
         </div>
@@ -60,10 +52,10 @@ export default function Contact() {
 }
 
 function Favorite({ contact }) {
-  // yes, this is a `let` for later
+  const fetcher = useFetcher();
   let favorite = contact.favorite;
   return (
-    <Form method="post">
+    <fetcher.Form method="post">
       <button
         name="favorite"
         value={favorite ? "false" : "true"}
@@ -71,6 +63,6 @@ function Favorite({ contact }) {
       >
         {favorite ? "★" : "☆"}
       </button>
-    </Form>
+    </fetcher.Form>
   );
 }
